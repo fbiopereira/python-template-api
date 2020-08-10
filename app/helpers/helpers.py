@@ -1,5 +1,5 @@
 from flask import request
-from ciperror import *
+from app.custom_error import *
 from hamcrest import *
 import subprocess
 import app
@@ -31,7 +31,7 @@ def check_exceptions(f):
     def wrapper(*args, **kwargs):
         try:
             return f(*args, **kwargs)
-        except BaseCipError as ex:
+        except BaseError as ex:
             app.log.error(code=ex.code, class_name='helpers', method='check_exceptions',
                           http_status=ex.http_status, message=ex.message)
             return ex.get_friendly_message_json(), ex.http_status

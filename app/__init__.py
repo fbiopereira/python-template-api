@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_restplus import Api
 from config import config
-from .services import HealthApi
+from .services import HealthApi, InfoApi
 from app.log import MscLog
-from app.common import last_tag
+from app.helpers import last_tag
 import os
 
 
@@ -16,3 +16,4 @@ log = MscLog(last_tag(), service_name=os.environ.get('SERVICE_NAME'), log_path=o
 
 api = Api(app, prefix="/api")
 api.add_resource(HealthApi, '/healthcheck')
+api.add_resource(InfoApi, '/info')
