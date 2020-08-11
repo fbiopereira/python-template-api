@@ -1,10 +1,11 @@
 from flask import request
 from app.custom_error import *
 from hamcrest import *
-import subprocess
 import app
 from threading import Thread
-
+from git import Repo, TagReference
+import os
+from datetime import datetime
 
 def check_json(json_expected, json_response):
     if type(json_expected) is list:
@@ -84,22 +85,31 @@ def process_async(async_function):
     return decorator
 
 
-def last_commit():
-    """Return last commit and your date"""
-    return subprocess.check_output(['git', 'log', '-1', '--pretty=format:"%h"'],
-                                   universal_newlines=False).decode("utf-8").replace('\"', '')
+def get_git_repo():
+    git_path = os.path.dirname(os.path.abspath(__file__))
+    git_path = git_path.replace("/app/helpers", "")
+    repo = Repo(git_path)
+    return repo
 
+def get_git_last_commit():
+    return get_git_repo().head.commit
 
-def last_commit_datetime():
-    """Return last commit and your date"""
-    return subprocess.check_output(['git', 'log', '-1', '--pretty=format:"%cd"'],
-                                   universal_newlines=False).decode("utf-8").replace('\"', '')
-
-
-def last_tag():
-    """Return last tag"""
+def get_git_last_tag():
     try:
-        return subprocess.check_output(['git', 'describe', '--abbrev=0', '--tags'],
-                            universal_newlines=False).decode("utf-8").replace('\n', '')
+        tag_ref = TagReference.list_items(get_git_repo())[0]
+        if tag_ref.tag is not None:
+            return tag_ref.tag
+        else:
+            return 'n0.0.0'
     except Exception:
-        return 'v0.0.0'
+        return 'e0.0.0'
+
+def get_service_version():
+    if app.config_name == 'development':
+        return get_git_last_commit()
+    else:
+        return get_git_last_tag()
+
+def get_server_datetime():
+    return str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+

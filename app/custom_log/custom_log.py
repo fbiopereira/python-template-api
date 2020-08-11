@@ -10,7 +10,7 @@ from logging import StreamHandler
 from .json_log_formatter import JSONFormatter
 
 SERVICE_NAME = "media_service_team_log"
-LOG_PATH = "{}/log/".format(os.getcwd())
+LOG_PATH = "{}/custom_log/".format(os.getcwd())
 GIT_TAG = "0.0.0"
 ENVIRONMENT = 'NAO INFORMADO'
 
@@ -19,7 +19,7 @@ ERROR = {
     'message': 'valor do status HTTP é inválido'
 }
 
-class MscLog(object):
+class CustomLog(object):
 
     def __init__(self, service_ip, service_name=SERVICE_NAME, log_path=LOG_PATH, scope_name=__name__):
 
@@ -32,7 +32,7 @@ class MscLog(object):
 
         self.create_folder()
 
-        file_name = datetime.now().strftime('%d-%m-%Y.log')
+        file_name = datetime.now().strftime('%d-%m-%Y.{}_log').format(service_name.replace(" ", "_"))
         file_path = "{0}{1}".format(self._log_folder, file_name)
         formatter = JSONFormatter()
 
@@ -69,15 +69,15 @@ class MscLog(object):
         return self.service_version
 
     def count_log_files(self):
-        """Return number of log files."""
-        return len(glob.glob("{0}/*.log*".format(self._log_folder)))
+        """Return number of custom_log files."""
+        return len(glob.glob("{0}/*.custom_log*".format(self._log_folder)))
 
     def get_log_files(self):
         """Return all logs files."""
-        return glob.glob("{0}/*.log*".format(self._log_folder))
+        return glob.glob("{0}/*.custom_log*".format(self._log_folder))
 
     def delete_log_files(self):
-        for file in glob.glob("{0}/*.log*".format(self._log_folder)):
+        for file in glob.glob("{0}/*.custom_log*".format(self._log_folder)):
             try:
                 os.remove(file)
             except IOError as io:
@@ -87,13 +87,13 @@ class MscLog(object):
         self._logger.debug(message)
 
     def info(self, class_name, method, data, correlation_id=None, process_status=None, file_name=None, host_ip=None, host_name=None, browser=None, service_name=None, message=None, step=None, user=None, user_ip=None):
-        """This module write in a log file.
+        """This module write in a custom_log file.
 
         Args:
             - status (int): Is a HTTP response status code.
             - service_name (str): Service name of the application
             - service_version (str): Service version of the application
-            - message (str): one message about the log.
+            - message (str): one message about the custom_log.
         Returns:
             The return value. True for success, False otherwise.
         """
@@ -115,13 +115,13 @@ class MscLog(object):
                             'user': user, 'host_ip': host_ip, 'host_name': host_name, 'so_version': platform.release(), 'python_version': platform.python_version()}})
 
     def warning(self, code, class_name, method, data, job_id=None, process_status=None, initial_time=None, finishing_time=None, user=None, path=None, host_ip=None, host_name=None, browser=None, user_ip=None, service_name=None, message=None, user_name=None, step=None):
-        """This module write in a log file.
+        """This module write in a custom_log file.
 
         Args:
-            - code (str): One value that define the message log.
+            - code (str): One value that define the message custom_log.
             - service_name (str): Service name of the application
             - service_version (str): Service version of the application
-            - message (str): one message about the log.
+            - message (str): one message about the custom_log.
         Returns:
             The return value. True for success, False otherwise.
         """
@@ -143,14 +143,14 @@ class MscLog(object):
                             'user': user, 'path': path, 'host_ip': host_ip, 'host_name': host_name, 'user_name': user_name, 'so_version': platform.release(), 'python_version': platform.python_version()}})
 
     def error(self, code, class_name, method, data, job_id=None, process_status=None, initial_time=None, finishing_time=None, user=None, path=None, host_ip=None, host_name=None, browser=None, user_ip=None, service_name=None, message=None, user_name=None, step=None):
-        """This module write in a log file.
+        """This module write in a custom_log file.
 
         Args:
-            - code (str): One value that define the message log.
+            - code (str): One value that define the message custom_log.
             - status (int): Is a HTTP reponse status code.
             - service_name (str): Service name of the application
             - service_version (str): Service version of the application
-            - message (str): one message about the log.
+            - message (str): one message about the custom_log.
         Returns:
             The return value. True for success, False otherwise.
         """
