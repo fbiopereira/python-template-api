@@ -30,16 +30,16 @@ BUILTIN_ATTRS = {
 
 
 class JSONFormatter(logging.Formatter):
-    """JSON log formatter.
+    """JSON custom_log formatter.
     Usage example::
         import logging
         import json_log_formatter
-        json_handler = logging.FileHandler(filename='/var/log/my-log.json')
+        json_handler = logging.FileHandler(filename='/var/custom_log/my-custom_log.json')
         json_handler.setFormatter(json_log_formatter.JSONFormatter())
         logger = logging.getLogger('my_json')
         logger.addHandler(json_handler)
         logger.info('Sign up', extra={'referral_code': '52d6ce'})
-    The log file will contain the following log record (inline)::
+    The custom_log file will contain the following custom_log record (inline)::
         {
             "message": "Sign up",
             "time": "2015-09-01T06:06:26.524448",
@@ -80,7 +80,7 @@ class JSONFormatter(logging.Formatter):
 
     def json_record(self, message, extra, record):
         """Prepares a JSON payload which will be logged.
-        Override this method to change JSON log format.
+        Override this method to change JSON custom_log format.
         :param message: Log message, e.g., `logger.info(msg='Sign up')`.
         :param extra: Dictionary that was passed as `extra` param
             `logger.info('Sign up', extra={'referral_code': '52d6ce'})`.
