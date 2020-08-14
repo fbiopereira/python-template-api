@@ -86,7 +86,11 @@ class CustomLog(object):
     def debug(self, message):
         self._logger.debug(message)
 
+<<<<<<< HEAD:app/custom_log/custom_log.py
     def info(self, class_name=None, method=None, data=None, http_status=None, correlation_id=None, process_status=None, file_name=None, host_ip=None, host_name=None, browser=None, service_name=None, message=None, step=None, user=None, user_ip=None):
+=======
+    def info(self, class_name, method, data, correlation_id=None, process_status=None, file_name=None, host_ip=None, host_name=None, browser=None, service_name=None, message=None, step=None, user=None, user_ip=None):
+>>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e:app/log/msc_log.py
         """This module write in a custom_log file.
 
         Args:
@@ -142,7 +146,11 @@ class CustomLog(object):
                             'process_status': process_status, 'initial_time': initial_time, 'finishing_time': finishing_time,
                             'user': user, 'path': path, 'host_ip': host_ip, 'host_name': host_name, 'user_name': user_name, 'so_version': platform.release(), 'python_version': platform.python_version()}})
 
+<<<<<<< HEAD:app/custom_log/custom_log.py
     def error(self, code, class_name=None, method=None, data=None, http_status=None, job_id=None, process_status=None, initial_time=None, finishing_time=None, user=None, path=None, host_ip=None, host_name=None, browser=None, user_ip=None, service_name=None, message=None, user_name=None, step=None):
+=======
+    def error(self, code, class_name, method, data, job_id=None, process_status=None, initial_time=None, finishing_time=None, user=None, path=None, host_ip=None, host_name=None, browser=None, user_ip=None, service_name=None, message=None, user_name=None, step=None):
+>>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e:app/log/msc_log.py
         """This module write in a custom_log file.
 
         Args:

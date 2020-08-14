@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from flask_restplus import Resource, fields
+=======
+from flask_restplus import Resource
+>>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e
 from app.helpers import check_exceptions, log_request, get_service_version, get_server_datetime
 import app
 from .support_namespace import support_namespace
@@ -20,7 +24,11 @@ class InfoApi(Resource):
     def get(self):
         info_return = {
             "version": get_service_version(),
+<<<<<<< HEAD
             "environment": app.flask_app.config['ENVIRONMENT'],
+=======
+            "environment": app.config['ENVIRONMENT'],
+>>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e
             "server_datetime": get_server_datetime(),
             "environment_variables": [
                     {"LOG_PATH": app.flask_app.config['LOG_PATH']},

@@ -92,13 +92,21 @@ def get_git_repo():
     return repo
 
 def get_git_last_commit():
+<<<<<<< HEAD
     return str(get_git_repo().head.commit)
+=======
+    return get_git_repo().head.commit
+>>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e
 
 def get_git_last_tag():
     try:
         tag_ref = TagReference.list_items(get_git_repo())[0]
         if tag_ref.tag is not None:
+<<<<<<< HEAD
             return str(tag_ref.tag)
+=======
+            return tag_ref.tag
+>>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e
         else:
             return 'n0.0.0'
     except Exception:
