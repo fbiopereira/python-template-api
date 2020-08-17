@@ -12,13 +12,11 @@ MarkupSafe==1.1.1
 prometheus-client==0.8.0
 prometheus-flask-exporter==0.15.4
 PyHamcrest==1.9.0
-<<<<<<< HEAD
 pyrsistent==0.16.0
 pytz==2020.1
 six==1.15.0
 smmap==3.0.4
 uWSGI==2.0.19.1
 Werkzeug==0.16.1
-=======
 gitpython==3.1.7
->>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e
+
