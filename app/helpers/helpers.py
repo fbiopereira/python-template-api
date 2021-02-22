@@ -105,11 +105,12 @@ def get_git_last_tag():
         return 'e0.0.0'
 
 def get_service_version():
-    if app.config_name == 'development':
+    if app.config_name != 'production':
         return get_git_last_commit()
     else:
         return get_git_last_tag()
 
 def get_server_datetime():
-    return str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return dt
 

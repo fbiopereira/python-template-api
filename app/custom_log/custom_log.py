@@ -19,40 +19,50 @@ ERROR = {
     'message': 'valor do status HTTP é inválido'
 }
 
+
 class CustomLog(object):
 
-    def __init__(self, service_ip, service_name=SERVICE_NAME, log_path=LOG_PATH, scope_name=__name__):
+    def __init__(self, service_ip, service_name=SERVICE_NAME, scope_name=__name__):
 
         self._max_file_size = 500000
-        self._log_folder = log_path
+        self._log_folder = None
         self.service_name = service_name
         self.service_version = os.getenv('GIT_TAG', GIT_TAG)
         self.service_ip = service_ip
         self.environment = os.getenv('ENVIRONMENT', ENVIRONMENT)
-
-        self.create_folder()
-
-        file_name = datetime.now().strftime('%d-%m-%Y.{}_log').format(service_name.replace(" ", "_"))
-        file_path = "{0}{1}".format(self._log_folder, file_name)
-        formatter = JSONFormatter()
-
-        file_handler = RotatingFileHandler(
-            file_path, maxBytes=self._max_file_size, backupCount=20)
-        file_handler.setLevel(logging.INFO)
-        file_handler.setFormatter(formatter)
-
-        stream_handler = StreamHandler()
-        stream_handler.setFormatter(formatter)
-        stream_handler.setLevel(logging.DEBUG)
-
+        self.formatter = JSONFormatter()
         self._logger = logging.getLogger(scope_name)
-        self._logger.addHandler(file_handler)
-        self._logger.addHandler(stream_handler)
+
+        if os.environ.get('LOG_PATH') is not None:
+            self._log_folder = os.environ.get('LOG_PATH')
+            self.create_log_file()
+
+        self.create_stdout_handler()
+
         self._logger.setLevel(logging.DEBUG)
 
     def create_folder(self):
         if not os.path.exists(self._log_folder):
             os.makedirs(self._log_folder)
+
+    def create_log_file(self):
+        self.create_folder()
+        file_name = datetime.now().strftime('%d-%m-%Y.{}_log').format(self.service_name.replace(" ", "_"))
+        file_path = "{0}{1}".format(self._log_folder, file_name)
+
+        file_handler = RotatingFileHandler(
+            file_path, maxBytes=self._max_file_size, backupCount=20)
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(self.formatter)
+
+        self._logger.addHandler(file_handler)
+
+    def create_stdout_handler(self):
+        stream_handler = StreamHandler()
+        stream_handler.setFormatter(self.formatter)
+        stream_handler.setLevel(logging.DEBUG)
+
+
 
     def path(self):
         """Return the path of the logs folder.
@@ -86,11 +96,9 @@ class CustomLog(object):
     def debug(self, message):
         self._logger.debug(message)
 
-<<<<<<< HEAD:app/custom_log/custom_log.py
+
     def info(self, class_name=None, method=None, data=None, http_status=None, correlation_id=None, process_status=None, file_name=None, host_ip=None, host_name=None, browser=None, service_name=None, message=None, step=None, user=None, user_ip=None):
-=======
-    def info(self, class_name, method, data, correlation_id=None, process_status=None, file_name=None, host_ip=None, host_name=None, browser=None, service_name=None, message=None, step=None, user=None, user_ip=None):
->>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e:app/log/msc_log.py
+
         """This module write in a custom_log file.
 
         Args:
@@ -146,11 +154,9 @@ class CustomLog(object):
                             'process_status': process_status, 'initial_time': initial_time, 'finishing_time': finishing_time,
                             'user': user, 'path': path, 'host_ip': host_ip, 'host_name': host_name, 'user_name': user_name, 'so_version': platform.release(), 'python_version': platform.python_version()}})
 
-<<<<<<< HEAD:app/custom_log/custom_log.py
     def error(self, code, class_name=None, method=None, data=None, http_status=None, job_id=None, process_status=None, initial_time=None, finishing_time=None, user=None, path=None, host_ip=None, host_name=None, browser=None, user_ip=None, service_name=None, message=None, user_name=None, step=None):
-=======
-    def error(self, code, class_name, method, data, job_id=None, process_status=None, initial_time=None, finishing_time=None, user=None, path=None, host_ip=None, host_name=None, browser=None, user_ip=None, service_name=None, message=None, user_name=None, step=None):
->>>>>>> 3a15b94a1b84ea0c9f8c71f5e443bee120f3835e:app/log/msc_log.py
+
+
         """This module write in a custom_log file.
 
         Args:
