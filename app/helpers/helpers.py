@@ -87,7 +87,10 @@ def process_async(async_function):
 
 def get_git_repo():
     git_path = os.path.dirname(os.path.abspath(__file__))
-    git_path = git_path.replace("/app/helpers", "")
+    if os.name != 'nt':
+        git_path = git_path.replace("/app/helpers", "")
+    else:
+        git_path = git_path.replace("\\app\\helpers", "")
     repo = Repo(git_path)
     return repo
 
